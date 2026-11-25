@@ -1,0 +1,10 @@
+const floating=document.getElementById('floating'),hero=document.querySelector('.hero');
+function updateContact(){if(!floating||!hero)return;const visible=hero.getBoundingClientRect().bottom<=0;floating.hidden=!visible;floating.classList.toggle('show',visible);}
+window.addEventListener('scroll',updateContact,{passive:true});window.addEventListener('resize',updateContact);updateContact();
+const menu=document.querySelector('.menu-toggle'),nav=document.querySelector('#main-nav');menu?.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));nav.classList.toggle('open',open);});nav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.setAttribute('aria-expanded','false');nav.classList.remove('open');}));
+const dialog=document.getElementById('lightbox');document.querySelectorAll('.open-photo').forEach(btn=>btn.addEventListener('click',()=>{document.getElementById('large-photo').src=btn.dataset.photo;document.getElementById('large-photo').alt=btn.dataset.caption;document.getElementById('photo-caption').textContent=btn.dataset.caption;dialog.showModal();}));document.getElementById('close-photo')?.addEventListener('click',()=>dialog.close());dialog?.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
+document.getElementById('wa-form')?.addEventListener('submit',e=>{e.preventDefault();if(!e.currentTarget.reportValidity())return;const v=id=>document.getElementById(id).value.trim();const message=`Hello JDR Warmer Solutions Ltd, I'd like to request a free assessment.\n\nName: ${v('q-name')}\nService: ${v('q-service')}\nArea/Postcode: ${v('q-area')}\nProject details: ${v('q-details')||'Not supplied'}\n\nI can attach photographs before sending.`;window.location.assign('https://wa.me/447922335975?text='+encodeURIComponent(message));});
+
+const requestedService = new URLSearchParams(window.location.search).get('service');
+const serviceField = document.querySelector('#q-service');
+if (requestedService && serviceField && [...serviceField.options].some(o => o.value === requestedService)) serviceField.value = requestedService;
